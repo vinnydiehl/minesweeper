@@ -1,6 +1,9 @@
 class MinesweeperGame
+  ### Initialization
+
   def render_game_init
     init_frame
+    init_grid
   end
 
   def init_frame
@@ -14,7 +17,7 @@ class MinesweeperGame
 
     @frame_height = 319
     # Width of the frame will differ based on amount of cells
-    @frame_width = (@frame_edge_width * 2) + (DIFFICULTY[@level][:w] * @cell_size)
+    @frame_width = (@frame_edge_width * 2) + (@difficulty[:w] * @cell_size)
 
     scale_x = @screen_width / @frame_width
     scale_y = @screen_height / @frame_height
@@ -52,9 +55,30 @@ class MinesweeperGame
     }
   end
 
+  def init_grid
+    @grid_width = @difficulty[:w] * @cell_size
+    @grid_height = @difficulty[:h] * @cell_size
+
+    grid = @args.outputs[:grid]
+    grid.w, grid.h = @grid_width, @grid_height
+
+    @grid.each_with_index do |col, x|
+      col.each_with_index do |row, y|
+        grid.primitives << {
+          x: x * @cell_size, y: y * @cell_size,
+          w: @cell_size, h: @cell_size,
+          path: "sprites/cells/empty.png",
+        }
+      end
+    end
+  end
+
+  ### Rendering
+
   def render_game
     render_background
     render_frame
+    render_grid
   end
 
   def render_frame
@@ -63,12 +87,27 @@ class MinesweeperGame
 
     # Center it on screen
     x = (@screen_width - w) / 2
-    y = (@screen_height - h) / 2
 
-    @args.outputs << {
-      x: x, y: y,
+    @primitives << {
+      x: x, y: 0,
       w: w, h: h,
       path: :frame,
+    }
+  end
+
+  def render_grid
+    w = @grid_width * @scale
+    h = @grid_height * @scale
+
+    # Center it on screen
+    x = (@screen_width - w) / 2
+    # Bump by frame height
+    y = @frame_bottom_height * @scale
+
+    @primitives << {
+      x: x, y: y,
+      w: w, h: h,
+      path: :grid,
     }
   end
 end

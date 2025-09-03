@@ -18,11 +18,9 @@ class MinesweeperGame
     @static_primitives = args.outputs.static_primitives
     @sprites = args.outputs.sprites
 
-    @level = :intermediate
-
     @scene = :game
-    render_game_init
     game_init
+    render_game_init
   end
 
   def tick
