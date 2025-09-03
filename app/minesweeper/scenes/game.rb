@@ -1,6 +1,10 @@
 class MinesweeperGame
   def game_init
-    @difficulty = DIFFICULTY[:intermediate]
+    @difficulty = DIFFICULTY[
+      # :beginner
+      :intermediate
+      # :expert
+    ]
 
     reset_game
   end
