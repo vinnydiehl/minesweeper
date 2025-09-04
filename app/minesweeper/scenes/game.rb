@@ -17,11 +17,14 @@ class MinesweeperGame
       Array.new(@difficulty[:h]) { Cell.new }
     end
 
+    # Can be nil, :win, or :lose
+    @result = nil
+
     # Generate mines randomly
     coords_list = (0...@difficulty[:w]).to_a.product(0...@difficulty[:h])
     @difficulty[:mines].times do
       x, y = coords_list.delete_at(rand(coords_list.length))
-      @grid[x][y].mine = true
+      @grid[x][y].set_mine
     end
 
     # Traverse the grid and count neighboring mines for cells that

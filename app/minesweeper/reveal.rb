@@ -3,6 +3,12 @@ class MinesweeperGame
     # Can't reveal a flagged cell or a cell that's already been revealed
     return if @grid[x][y].flag == :flag || @grid[x][y].revealed?
 
+    # If we reveal a mine, it explodes :(
+    if @grid[x][y].mine?
+      @result = :loss
+      reveal_lose(x, y)
+    end
+
     @grid[x][y].revealed = true
 
     if @grid[x][y].neighbors == 0 && !@grid[x][y].mine?
@@ -16,5 +22,26 @@ class MinesweeperGame
         reveal_cell(tx, ty)
       end
     end
+  end
+
+  # Called when a mine is revealed. Reveals all cells, and changes sprites for
+  # the exploded mine and false flags.
+  def reveal_lose(mine_x, mine_y)
+    @grid.each_with_index do |col, x|
+      col.each_with_index do |cell, y|
+        if cell.flag == :flag
+          if !cell.mine?
+            cell.revealed = true
+            cell.sprite = :mine_wrong
+          end
+        elsif [x, y] == [mine_x, mine_y]
+          cell.sprite = :mine_exploded
+        elsif cell.mine?
+          cell.revealed = true
+        end
+      end
+    end
+
+    draw_grid
   end
 end

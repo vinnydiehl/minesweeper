@@ -1,5 +1,8 @@
 class MinesweeperGame
   def process_mouse_inputs
+    # Grid stuff follows, don't process grid clicks if we've won or lost
+    return if @result
+
     if @mouse.key_up?(:left) && @mouse_hover_cell
       x, y = @mouse_hover_cell
 
