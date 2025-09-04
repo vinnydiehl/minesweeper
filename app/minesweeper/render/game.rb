@@ -9,6 +9,7 @@ class MinesweeperGame
     @frame_top_height = 11
     @frame_middle_bezel_height = 11
     @frame_display_edge_height = 55
+    @display_height = 33
     @cell_size = 16
 
     @grid_width = @difficulty[:w] * @cell_size
@@ -18,6 +19,9 @@ class MinesweeperGame
 
     @frame_height = @frame_display_edge_height + @frame_bottom_height + @grid_height
     @frame_width = @frame_edges_width + @grid_width
+
+    @smiley_size = 24
+    @smiley_bezel_size = @smiley_size + 2
 
     scale_x = @screen_width / @frame_width
     scale_y = @screen_height / @frame_height
@@ -156,11 +160,28 @@ class MinesweeperGame
     end
   end
 
+  def draw_smiley(sprite)
+    smiley = @args.outputs[:smiley]
+    smiley.w, smiley.h = @smiley_bezel_size, @smiley_bezel_size
+
+    smiley << {
+      x: 0, y: 0,
+      w: @smiley_bezel_size, h: @smiley_bezel_size,
+      path: "sprites/frame/smiley_bezel.png",
+    }
+    smiley << {
+      x: 1, y: 1,
+      w: @smiley_size, h: @smiley_size,
+      path: "sprites/smileys/#{sprite}.png",
+    }
+  end
+
   ### Rendering
 
   def render_game
     render_background
     render_frame
+    render_smiley
     render_grid
   end
 
@@ -175,6 +196,27 @@ class MinesweeperGame
       x: x, y: 0,
       w: w, h: h,
       path: :frame,
+    }
+  end
+
+  def render_smiley
+    draw_smiley(:smile)
+
+    size = @smiley_bezel_size * @scale
+    center_x = @screen_width / 2
+    x_offset = (@frame_left_edge_width - @frame_right_edge_width) * @scale / 2
+    x = center_x - (size / 2) + x_offset
+
+    base_y = @frame_bottom_height * @scale
+    grid_y = @grid_height * @scale
+    bezel_y = @frame_middle_bezel_height * @scale
+    display_y = @display_height * @scale / 2
+    y = base_y + grid_y + bezel_y + display_y - (size / 2)
+
+    @primitives << {
+      x: x, y: y,
+      w: size, h: size,
+      path: :smiley,
     }
   end
 
