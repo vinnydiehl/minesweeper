@@ -1,6 +1,6 @@
 SCENES = %w[game].freeze
 
-%w[constants minesweeper].each { |f| require "app/minesweeper/#{f}.rb" }
+%w[constants cell minesweeper].each { |f| require "app/minesweeper/#{f}.rb" }
 
 %w[scenes render].each { |dir| SCENES.each { |f| require "app/minesweeper/#{dir}/#{f}.rb" } }
 

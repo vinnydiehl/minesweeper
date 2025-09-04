@@ -94,11 +94,17 @@ class MinesweeperGame
     grid.w, grid.h = @grid_width, @grid_height
 
     @grid.each_with_index do |col, x|
-      col.each_with_index do |row, y|
+      col.each_with_index do |cell, y|
+        sprite = if cell.mine
+          "mine"
+        else
+          "empty"
+        end
+
         grid.primitives << {
           x: x * @cell_size, y: y * @cell_size,
           w: @cell_size, h: @cell_size,
-          path: "sprites/cells/empty.png",
+          path: "sprites/cells/#{sprite}.png",
         }
       end
     end

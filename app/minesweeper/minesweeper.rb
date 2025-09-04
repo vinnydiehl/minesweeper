@@ -32,7 +32,7 @@ class MinesweeperGame
 
     # Reset game, for development
     if @inputs.keyboard.key_down.backspace
-      @args.gtk.reset
+      @args.gtk.reboot
     end
   end
 end
