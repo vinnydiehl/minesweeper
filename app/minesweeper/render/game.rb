@@ -47,6 +47,15 @@ class MinesweeperGame
     frame.w = @frame_width
     frame.h = @frame_height
 
+    # The display will be a window to this background
+    frame.primitives << {
+      primitive_marker: :solid,
+      x: 0, y: 0,
+      w: @frame_width, h: @frame_height,
+      r: 192, g: 192, b: 192,
+    }
+
+    # Left/right edges of the display
     frame.primitives << {
       x: 0, y: @frame_height - @frame_display_edge_height,
       w: @frame_left_edge_width, h: @frame_display_edge_height,
@@ -59,6 +68,7 @@ class MinesweeperGame
       path: "sprites/frame/display_right_edge.png",
     }
 
+    # Left/right edges of the grid
     frame.primitives << {
       x: 0, y: @frame_bottom_height,
       w: @frame_left_edge_width, h: @grid_height,
@@ -70,12 +80,14 @@ class MinesweeperGame
       path: "sprites/frame/right_edge.png",
     }
 
+    # Top edge
     frame.primitives << {
       x: @frame_left_edge_width, y: frame.h - @frame_top_height,
       w: @frame_width - @frame_edges_width, h: @frame_top_height,
       path: "sprites/frame/top_edge.png",
     }
 
+    # Bottom edge and bottom corners
     frame.primitives << {
       x: 0, y: 0,
       w: @frame_left_edge_width, h: @frame_bottom_height,
@@ -92,6 +104,7 @@ class MinesweeperGame
       path: "sprites/frame/bottom_edge.png",
     }
 
+    # Bezel between display and grid
     frame.primitives << {
       x: @frame_left_edge_width,
       y: frame.h - @frame_display_edge_height,
