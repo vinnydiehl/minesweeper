@@ -167,14 +167,17 @@ class MinesweeperGame
 
   def render_grid
     render_grid_target(:grid)
-    render_grid_target(:grid_overlay, a: 200)
+    render_grid_target(
+      :grid_overlay,
+      # Uncomment to make the overlay transparent for debugging
+      # a: 200,
+    )
   end
 
   def render_grid_target(path, a: 255)
     @primitives << {
       **@grid_rect,
       path: path,
-      # Alpha channel for debugging
       a: a,
     }
   end
