@@ -19,3 +19,7 @@ DIFFICULTY = {
 }
 
 FLAG_STATES = [nil, :flag, :question_mark]
+
+# Offsets to find neighboring cells
+OFFSETS = [-1, 0, 1].product([-1, 0, 1])
+                    .reject { |ox, oy| ox == 0 && oy == 0 }

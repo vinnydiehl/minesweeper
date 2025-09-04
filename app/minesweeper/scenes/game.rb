@@ -26,13 +26,11 @@ class MinesweeperGame
 
     # Traverse the grid and count neighboring mines for cells that
     # don't contain mines
-    offsets = [-1, 0, 1].product([-1, 0, 1])
-                        .reject { |ox, oy| ox == 0 && oy == 0 }
     @grid.each_with_index do |col, x|
       col.each_with_index do |cell, y|
         next if cell.mine?
 
-        cell.neighbors = offsets.count do |ox, oy|
+        cell.neighbors = OFFSETS.count do |ox, oy|
           tx, ty = x + ox, y + oy
 
           # Bounds check

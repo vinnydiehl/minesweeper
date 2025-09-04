@@ -3,10 +3,7 @@ class MinesweeperGame
     if @mouse.key_up?(:left) && @mouse_hover_cell
       x, y = @mouse_hover_cell
 
-      # Can't reveal a flagged cell
-      return if @grid[x][y].flag == :flag
-
-      @grid[x][y].revealed = true
+      reveal_cell(x, y)
 
       @mouse_hover_cell = nil
       draw_grid_overlay
