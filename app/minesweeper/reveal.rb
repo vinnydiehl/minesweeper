@@ -6,6 +6,7 @@ class MinesweeperGame
     # If we reveal a mine, it explodes :(
     if @grid[x][y].mine?
       @result = :loss
+      @ended_at_tick = @tick
       reveal_lose(x, y)
     end
 
@@ -13,6 +14,7 @@ class MinesweeperGame
 
     if win?
       @result = :win
+      @ended_at_tick = @tick
       reveal_win
     end
 

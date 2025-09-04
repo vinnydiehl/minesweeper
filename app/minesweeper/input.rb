@@ -60,6 +60,7 @@ class MinesweeperGame
   # and move them away so the first click is on a cell with 0 neighboring mines
   def handle_first_click(x, y)
     @first_click = false
+    @started_at_tick = @tick
 
     mines_to_generate = [-1, 0, 1].product([-1, 0, 1]).count do |ox, oy|
       tx, ty = x + ox, y + oy

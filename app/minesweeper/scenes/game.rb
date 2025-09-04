@@ -11,6 +11,7 @@ class MinesweeperGame
   end
 
   def game_tick
+    @tick = Kernel.tick_count
     process_mouse_inputs
   end
 

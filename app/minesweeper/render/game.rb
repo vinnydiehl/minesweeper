@@ -41,13 +41,14 @@ class MinesweeperGame
     @smiley_size = 24
     @smiley_bezel_size = @smiley_size + 2
     smiley_screen_size = @smiley_bezel_size * @scale
-    @base_y = @frame_bottom_height * @scale
-    @grid_y = @grid_height * @scale
-    @bezel_y = @frame_middle_bezel_height * @scale
-    @display_y = @display_height * @scale / 2
+    base_y = @frame_bottom_height * @scale
+    grid_y = @grid_height * @scale
+    bezel_y = @frame_middle_bezel_height * @scale
+    display_y = @display_height * @scale / 2
+    @center_in_display_y = base_y + grid_y + bezel_y + display_y
     @smiley_rect = {
       x: (@screen_width / 2) - (smiley_screen_size / 2) + @grid_x_offset,
-      y: @base_y + @grid_y + @bezel_y + @display_y - (smiley_screen_size / 2),
+      y: @center_in_display_y - (smiley_screen_size / 2),
       w: smiley_screen_size, h: smiley_screen_size,
     }
 
@@ -59,6 +60,7 @@ class MinesweeperGame
     @digit_bezel_width = (@digit_width * 3) + 2
     @digit_padding_left = 4 * @scale
     @digit_padding_right = 5 * @scale
+    @digit_y = @center_in_display_y - (@digit_bezel_height * @scale / 2)
 
     init_frame
     draw_grid
@@ -260,6 +262,7 @@ class MinesweeperGame
 
   def render_digits
     render_remaining
+    render_time
   end
 
   def render_remaining
@@ -267,9 +270,30 @@ class MinesweeperGame
 
     @primitives << {
       x: @frame_left_edge_x + (@frame_left_edge_width * @scale) + @digit_padding_left,
-      y: @base_y + @grid_y + @bezel_y + @display_y - (@digit_bezel_height * @scale / 2),
+      y: @digit_y,
       w: @digit_bezel_width * @scale, h: @digit_bezel_height * @scale,
       path: :remaining,
+    }
+  end
+
+  def render_time
+    time = if @first_click
+      0
+    elsif @result
+      ((@ended_at_tick - @started_at_tick) / 60).floor
+    else
+      ((@tick - @started_at_tick) / 60).floor
+    end
+
+    draw_digits(:time, time)
+
+    @primitives << {
+      x: @frame_left_edge_x + (@frame_width * @scale) -
+         (@frame_right_edge_width * @scale) - (@digit_bezel_width * @scale) -
+         @digit_padding_right,
+      y: @digit_y,
+      w: @digit_bezel_width * @scale, h: @digit_bezel_height * @scale,
+      path: :time,
     }
   end
 
