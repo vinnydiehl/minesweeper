@@ -248,7 +248,8 @@ class MinesweeperGame
     elsif @result
       @result == :win ? :cool : :dead
     elsif @mouse_hover_cell
-      :omg
+      x, y = @mouse_hover_cell
+      @grid[x][y].revealed? || @grid[x][y].flag == :flag ? :smile : :omg
     else
       :smile
     end
