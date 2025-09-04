@@ -17,3 +17,5 @@ DIFFICULTY = {
     mines: 99,
   },
 }
+
+FLAG_STATES = [nil, :flag, :question_mark]

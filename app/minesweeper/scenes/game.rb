@@ -7,6 +7,7 @@ class MinesweeperGame
     ]
 
     reset_game
+    render_game_init
   end
 
   def game_tick; end

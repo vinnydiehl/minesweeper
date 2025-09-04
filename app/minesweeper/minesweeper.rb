@@ -9,6 +9,11 @@ class MinesweeperGame
     @screen_height = args.grid.h
 
     @inputs = args.inputs
+    @mouse = args.inputs.mouse
+
+    # Cell that the mouse is hovering over with the left mouse
+    # button held down
+    @mouse_hover_cell = nil
 
     # Outputs
     @outputs = args.outputs
@@ -20,7 +25,6 @@ class MinesweeperGame
 
     @scene = :game
     game_init
-    render_game_init
   end
 
   def tick
@@ -34,5 +38,7 @@ class MinesweeperGame
     if @inputs.keyboard.key_down.backspace
       @args.gtk.reboot
     end
+
+    process_mouse_inputs
   end
 end

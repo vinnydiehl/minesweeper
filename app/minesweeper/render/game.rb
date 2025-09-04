@@ -25,10 +25,21 @@ class MinesweeperGame
 
     # Since the borders are different widths, we need to offset the grid
     # to the right a few pixels.
-    @grid_x_offset = (@frame_left_edge_width - @frame_right_edge_width) * (@scale / 2)
+    @grid_x_offset = (@frame_left_edge_width - @frame_right_edge_width) * @scale / 2
+
+    grid_w = @grid_width * @scale
+    @grid_rect = {
+      w: grid_w,
+      h: @grid_height * @scale,
+      # Center it on screen
+      x: ((@screen_width - grid_w) / 2) + @grid_x_offset,
+      # Bump by frame height
+      y: @frame_bottom_height * @scale,
+    }
 
     init_frame
-    init_grid
+    draw_grid
+    draw_grid_overlay
   end
 
   def init_frame
@@ -89,19 +100,47 @@ class MinesweeperGame
     }
   end
 
-  def init_grid
+  # Draw/redraw functions
+
+  def draw_grid
     grid = @args.outputs[:grid]
     grid.w, grid.h = @grid_width, @grid_height
 
     @grid.each_with_index do |col, x|
       col.each_with_index do |cell, y|
         sprite = if cell.mine?
-          "mine"
+          :mine
         else
-          cell.neighbors > 0 ? cell.neighbors : "empty"
+          cell.neighbors > 0 ? cell.neighbors : :empty
         end
 
         grid.primitives << {
+          x: x * @cell_size, y: y * @cell_size,
+          w: @cell_size, h: @cell_size,
+          path: "sprites/cells/#{sprite}.png",
+        }
+      end
+    end
+  end
+
+  def draw_grid_overlay
+    overlay = @args.outputs[:grid_overlay]
+    overlay.w, overlay.h = @grid_width, @grid_height
+
+    @grid.each_with_index do |col, x|
+      col.each_with_index do |cell, y|
+        next if cell.revealed?
+
+        clicked = [x, y] == @mouse_hover_cell
+        sprite = if cell.flag
+          # Could be :flag or :question_mark
+          cell.flag == :question_mark && clicked ? :question_mark_clicked
+                                                 : cell.flag
+        else
+          clicked ? :empty : :hidden
+        end
+
+        overlay.primitives << {
           x: x * @cell_size, y: y * @cell_size,
           w: @cell_size, h: @cell_size,
           path: "sprites/cells/#{sprite}.png",
@@ -133,18 +172,14 @@ class MinesweeperGame
   end
 
   def render_grid
-    w = @grid_width * @scale
-    h = @grid_height * @scale
+    render_grid_target(:grid)
+    render_grid_target(:grid_overlay)
+  end
 
-    # Center it on screen
-    x = ((@screen_width - w) / 2) + @grid_x_offset
-    # Bump by frame height
-    y = @frame_bottom_height * @scale
-
+  def render_grid_target(path)
     @primitives << {
-      x: x, y: y,
-      w: w, h: h,
-      path: :grid,
+      **@grid_rect,
+      path: path,
     }
   end
 end

@@ -12,6 +12,10 @@ class Cell
     # number of surrounding mines
     @neighbors = 0
 
+    def revealed?
+      revealed
+    end
+
     def mine?
       mine
     end
