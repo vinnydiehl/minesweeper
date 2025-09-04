@@ -11,10 +11,6 @@ class MinesweeperGame
     @inputs = args.inputs
     @mouse = args.inputs.mouse
 
-    # Cell that the mouse is hovering over with the left mouse
-    # button held down
-    @mouse_hover_cell = nil
-
     # Outputs
     @outputs = args.outputs
     @debug = args.outputs.debug

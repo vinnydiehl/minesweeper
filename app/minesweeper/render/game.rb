@@ -20,9 +20,6 @@ class MinesweeperGame
     @frame_height = @frame_display_edge_height + @frame_bottom_height + @grid_height
     @frame_width = @frame_edges_width + @grid_width
 
-    @smiley_size = 24
-    @smiley_bezel_size = @smiley_size + 2
-
     scale_x = @screen_width / @frame_width
     scale_y = @screen_height / @frame_height
     @scale = [scale_x, scale_y].min
@@ -39,6 +36,20 @@ class MinesweeperGame
       x: ((@screen_width - grid_w) / 2) + @grid_x_offset,
       # Bump by frame height
       y: @frame_bottom_height * @scale,
+    }
+
+    @smiley_size = 24
+    @smiley_bezel_size = @smiley_size + 2
+    smiley_screen_size = @smiley_bezel_size * @scale
+
+    base_y = @frame_bottom_height * @scale
+    grid_y = @grid_height * @scale
+    bezel_y = @frame_middle_bezel_height * @scale
+    display_y = @display_height * @scale / 2
+    @smiley_rect = {
+      x: (@screen_width / 2) - (smiley_screen_size / 2) + @grid_x_offset,
+      y: base_y + grid_y + bezel_y + display_y - (smiley_screen_size / 2),
+      w: smiley_screen_size, h: smiley_screen_size,
     }
 
     init_frame
@@ -200,22 +211,19 @@ class MinesweeperGame
   end
 
   def render_smiley
-    draw_smiley(:smile)
-
-    size = @smiley_bezel_size * @scale
-    center_x = @screen_width / 2
-    x_offset = (@frame_left_edge_width - @frame_right_edge_width) * @scale / 2
-    x = center_x - (size / 2) + x_offset
-
-    base_y = @frame_bottom_height * @scale
-    grid_y = @grid_height * @scale
-    bezel_y = @frame_middle_bezel_height * @scale
-    display_y = @display_height * @scale / 2
-    y = base_y + grid_y + bezel_y + display_y - (size / 2)
+    sprite = if @smiley_mouse_down
+      :clicked
+    elsif @result
+      @result == :win ? :cool : :dead
+    elsif @mouse_hover_cell
+      :omg
+    else
+      :smile
+    end
+    draw_smiley(sprite)
 
     @primitives << {
-      x: x, y: y,
-      w: size, h: size,
+      **@smiley_rect,
       path: :smiley,
     }
   end

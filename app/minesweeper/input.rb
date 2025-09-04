@@ -1,5 +1,10 @@
 class MinesweeperGame
   def process_mouse_inputs
+    @smiley_mouse_down = @mouse.key_down_or_held?(:left) && mouse_on_smiley?
+    if @mouse.key_up?(:left) && mouse_on_smiley?
+      reset_game
+    end
+
     # Grid stuff follows, don't process grid clicks if we've won or lost
     return if @result
 
@@ -32,6 +37,10 @@ class MinesweeperGame
 
   def mouse_in_grid?
     @mouse.intersect_rect?(@grid_rect)
+  end
+
+  def mouse_on_smiley?
+    @mouse.intersect_rect?(@smiley_rect)
   end
 
   def mouse_grid_location

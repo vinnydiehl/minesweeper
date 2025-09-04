@@ -29,6 +29,13 @@ class MinesweeperGame
     generate_mines(@difficulty[:mines])
 
     find_neighbors
+
+    # Cell that the mouse is hovering over with the left mouse
+    # button held down
+    @mouse_hover_cell = nil
+
+    # Are we holding the mouse down over the smiley?
+    @smiley_mouse_down = false
   end
 
   def generate_mines(n)
