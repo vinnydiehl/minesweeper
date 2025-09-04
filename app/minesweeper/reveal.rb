@@ -11,6 +11,11 @@ class MinesweeperGame
 
     @grid[x][y].revealed = true
 
+    if win?
+      @result = :win
+      reveal_win
+    end
+
     if @grid[x][y].neighbors == 0 && !@grid[x][y].mine?
       # Floodfill
       OFFSETS.each do |ox, oy|
@@ -43,5 +48,14 @@ class MinesweeperGame
     end
 
     draw_grid
+  end
+
+  # When we win, flag all mines
+  def reveal_win
+    @grid.flatten.select(&:mine?).each { |c| c.flag = :flag }
+  end
+
+  def win?
+    @grid.flatten.reject(&:revealed?).all?(&:mine?)
   end
 end
