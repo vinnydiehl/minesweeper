@@ -10,7 +10,9 @@ class MinesweeperGame
     render_game_init
   end
 
-  def game_tick; end
+  def game_tick
+    process_mouse_inputs
+  end
 
   def reset_game
     @grid = Array.new(@difficulty[:w]) do
@@ -36,6 +38,10 @@ class MinesweeperGame
 
     # Are we holding the mouse down over the smiley?
     @smiley_mouse_down = false
+
+    # Mines remaining (subtracts with each flag placed regardless of
+    # whether the flag is actually over a mine)
+    @remaining = @difficulty[:mines]
   end
 
   def generate_mines(n)

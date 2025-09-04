@@ -29,8 +29,15 @@ class MinesweeperGame
 
     if @mouse.key_down?(:right) && mouse_in_grid?
       x, y = mouse_grid_location
+
+      # Can't flag a revealed cell
+      return if @grid[x][y].revealed?
+
       @grid[x][y].flag =
         FLAG_STATES[(FLAG_STATES.index(@grid[x][y].flag) + 1) % FLAG_STATES.size]
+
+      @remaining = @difficulty[:mines] - @grid.flatten.count { |c| c.flag == :flag }
+
       draw_grid_overlay
     end
   end

@@ -34,8 +34,6 @@ class MinesweeperGame
     if @inputs.keyboard.key_down.backspace
       @args.gtk.reboot
     end
-
-    process_mouse_inputs
   end
 
   # Do a bounds check for [x, y] and return the cell, or nil if it fails

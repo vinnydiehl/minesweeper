@@ -41,16 +41,24 @@ class MinesweeperGame
     @smiley_size = 24
     @smiley_bezel_size = @smiley_size + 2
     smiley_screen_size = @smiley_bezel_size * @scale
-
-    base_y = @frame_bottom_height * @scale
-    grid_y = @grid_height * @scale
-    bezel_y = @frame_middle_bezel_height * @scale
-    display_y = @display_height * @scale / 2
+    @base_y = @frame_bottom_height * @scale
+    @grid_y = @grid_height * @scale
+    @bezel_y = @frame_middle_bezel_height * @scale
+    @display_y = @display_height * @scale / 2
     @smiley_rect = {
       x: (@screen_width / 2) - (smiley_screen_size / 2) + @grid_x_offset,
-      y: base_y + grid_y + bezel_y + display_y - (smiley_screen_size / 2),
+      y: @base_y + @grid_y + @bezel_y + @display_y - (smiley_screen_size / 2),
       w: smiley_screen_size, h: smiley_screen_size,
     }
+
+    @frame_left_edge_x = (@screen_width / 2) - (@frame_width * @scale / 2)
+
+    @digit_width = 13
+    @digit_height = 23
+    @digit_bezel_height = @digit_height + 2
+    @digit_bezel_width = (@digit_width * 3) + 2
+    @digit_padding_left = 4 * @scale
+    @digit_padding_right = 5 * @scale
 
     init_frame
     draw_grid
@@ -187,12 +195,34 @@ class MinesweeperGame
     }
   end
 
+  def draw_digits(target, n)
+    target = @args.outputs[target]
+    target.w, target.h = @digit_bezel_width, @digit_bezel_height
+
+    str = n.to_s.rjust(3, "*")
+
+    target << {
+      x: 0, y: 0,
+      w: @digit_bezel_width, h: @digit_bezel_height,
+      path: "sprites/frame/3_digit_bezel.png",
+    }
+
+    str.each_char.with_index do |c, i|
+      target << {
+        x: 1 + (i * @digit_width), y: 1,
+        w: @digit_width, h: @digit_height,
+        path: "sprites/digits/#{c}.png",
+      }
+    end
+  end
+
   ### Rendering
 
   def render_game
     render_background
     render_frame
     render_smiley
+    render_digits
     render_grid
   end
 
@@ -225,6 +255,21 @@ class MinesweeperGame
     @primitives << {
       **@smiley_rect,
       path: :smiley,
+    }
+  end
+
+  def render_digits
+    render_remaining
+  end
+
+  def render_remaining
+    draw_digits(:remaining, @remaining)
+
+    @primitives << {
+      x: @frame_left_edge_x + (@frame_left_edge_width * @scale) + @digit_padding_left,
+      y: @base_y + @grid_y + @bezel_y + @display_y - (@digit_bezel_height * @scale / 2),
+      w: @digit_bezel_width * @scale, h: @digit_bezel_height * @scale,
+      path: :remaining,
     }
   end
 
