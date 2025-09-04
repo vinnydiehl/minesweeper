@@ -2,5 +2,5 @@ devid=vinnydiehl
 devtitle=Vinny Diehl
 gameid=Minesweeper
 gametitle=Minesweeper
-version=0.1
+version=1.0
 icon=metadata/icon.png
