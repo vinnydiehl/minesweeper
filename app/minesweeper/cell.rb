@@ -29,6 +29,11 @@ class Cell
       @sprite = :mine
     end
 
+    def remove_mine
+      @mine = false
+      @sprite = :empty
+    end
+
     def neighbors=(n)
       @neighbors = n
       @sprite = n == 0 ? :empty : n

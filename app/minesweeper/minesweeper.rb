@@ -41,4 +41,11 @@ class MinesweeperGame
 
     process_mouse_inputs
   end
+
+  # Do a bounds check for [x, y] and return the cell, or nil if it fails
+  # the check.
+  def cell_at(x, y)
+    return nil if x < 0 || y < 0 || x >= @grid.length || y >= @grid[0].length
+    @grid[x][y]
+  end
 end

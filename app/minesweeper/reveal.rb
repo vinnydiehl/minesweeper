@@ -22,7 +22,7 @@ class MinesweeperGame
         tx, ty = x + ox, y + oy
 
         # Bounds check
-        next if tx < 0 || ty < 0 || tx >= @grid.length || ty >= @grid[0].length
+        next unless cell_at(tx, ty)
 
         reveal_cell(tx, ty)
       end

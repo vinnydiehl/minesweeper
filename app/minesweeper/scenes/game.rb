@@ -17,31 +17,38 @@ class MinesweeperGame
       Array.new(@difficulty[:h]) { Cell.new }
     end
 
+    # Need to keep track of this so that if the first click is near a mine,
+    # we can move them
+    @first_click = true
+
     # Can be nil, :win, or :lose
     @result = nil
 
     # Generate mines randomly
-    coords_list = (0...@difficulty[:w]).to_a.product(0...@difficulty[:h])
-    @difficulty[:mines].times do
-      x, y = coords_list.delete_at(rand(coords_list.length))
+    @mine_free_cells = (0...@difficulty[:w]).to_a.product(0...@difficulty[:h])
+    generate_mines(@difficulty[:mines])
+
+    find_neighbors
+  end
+
+  def generate_mines(n)
+    n.times do
+      x, y = @mine_free_cells.delete_at(rand(@mine_free_cells.length))
       @grid[x][y].set_mine
     end
+  end
 
-    # Traverse the grid and count neighboring mines for cells that
-    # don't contain mines
+  # Traverse the grid and count neighboring mines for cells that
+  # don't contain mines
+  def find_neighbors
     @grid.each_with_index do |col, x|
       col.each_with_index do |cell, y|
         next if cell.mine?
 
         cell.neighbors = OFFSETS.count do |ox, oy|
           tx, ty = x + ox, y + oy
-
-          # Bounds check
-          if tx < 0 || ty < 0 || tx >= @grid.length || ty >= col.length
-            next false
-          end
-
-          @grid[tx][ty].mine?
+          neighbor = cell_at(tx, ty)
+          neighbor&.mine?
         end
       end
     end
