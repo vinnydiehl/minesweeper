@@ -95,10 +95,10 @@ class MinesweeperGame
 
     @grid.each_with_index do |col, x|
       col.each_with_index do |cell, y|
-        sprite = if cell.mine
+        sprite = if cell.mine?
           "mine"
         else
-          "empty"
+          cell.neighbors > 0 ? cell.neighbors : "empty"
         end
 
         grid.primitives << {

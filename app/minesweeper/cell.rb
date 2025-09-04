@@ -8,8 +8,12 @@ class Cell
     # Can either be nil, :flag, or :question_mark
     @flag = nil
 
-    # This will remain nil if it's a mine, otherwise contains the
+    # This will remain 0 if it's a mine, otherwise contains the
     # number of surrounding mines
-    @neighbors = nil
+    @neighbors = 0
+
+    def mine?
+      mine
+    end
   end
 end
