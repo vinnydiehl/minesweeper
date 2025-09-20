@@ -72,70 +72,72 @@ class MinesweeperGame
     frame.w = @frame_width
     frame.h = @frame_height
 
-    # The display will be a window to this background
-    frame.primitives << {
-      primitive_marker: :solid,
-      x: 0, y: 0,
-      w: @frame_width, h: @frame_height,
-      r: 192, g: 192, b: 192,
-    }
+    frame.primitives << [
+      # The display will be a window to this background
+      {
+        primitive_marker: :solid,
+        x: 0, y: 0,
+        w: @frame_width, h: @frame_height,
+        r: 192, g: 192, b: 192,
+      },
 
-    # Left/right edges of the display
-    frame.primitives << {
-      x: 0, y: @frame_height - @frame_display_edge_height,
-      w: @frame_left_edge_width, h: @frame_display_edge_height,
-      path: "sprites/frame/display_left_edge.png",
-    }
-    frame.primitives << {
-      x: @frame_width - @frame_right_edge_width,
-      y: @frame_height - @frame_display_edge_height,
-      w: @frame_right_edge_width, h: @frame_display_edge_height,
-      path: "sprites/frame/display_right_edge.png",
-    }
+      # Left/right edges of the display
+      {
+        x: 0, y: @frame_height - @frame_display_edge_height,
+        w: @frame_left_edge_width, h: @frame_display_edge_height,
+        path: "sprites/frame/display_left_edge.png",
+      },
+      {
+        x: @frame_width - @frame_right_edge_width,
+        y: @frame_height - @frame_display_edge_height,
+        w: @frame_right_edge_width, h: @frame_display_edge_height,
+        path: "sprites/frame/display_right_edge.png",
+      },
 
-    # Left/right edges of the grid
-    frame.primitives << {
-      x: 0, y: @frame_bottom_height,
-      w: @frame_left_edge_width, h: @grid_height,
-      path: "sprites/frame/left_edge.png",
-    }
-    frame.primitives << {
-      x: @frame_width - @frame_right_edge_width, y: @frame_bottom_height,
-      w: @frame_right_edge_width, h: @grid_height,
-      path: "sprites/frame/right_edge.png",
-    }
+      # Left/right edges of the grid
+      {
+        x: 0, y: @frame_bottom_height,
+        w: @frame_left_edge_width, h: @grid_height,
+        path: "sprites/frame/left_edge.png",
+      },
+      {
+        x: @frame_width - @frame_right_edge_width, y: @frame_bottom_height,
+        w: @frame_right_edge_width, h: @grid_height,
+        path: "sprites/frame/right_edge.png",
+      },
 
-    # Top edge
-    frame.primitives << {
-      x: @frame_left_edge_width, y: frame.h - @frame_top_height,
-      w: @frame_width - @frame_edges_width, h: @frame_top_height,
-      path: "sprites/frame/top_edge.png",
-    }
+      # Top edge
+      {
+        x: @frame_left_edge_width, y: frame.h - @frame_top_height,
+        w: @frame_width - @frame_edges_width, h: @frame_top_height,
+        path: "sprites/frame/top_edge.png",
+      },
 
-    # Bottom edge and bottom corners
-    frame.primitives << {
-      x: 0, y: 0,
-      w: @frame_left_edge_width, h: @frame_bottom_height,
-      path: "sprites/frame/bottom_left_corner.png",
-    }
-    frame.primitives << {
-      x: @frame_width - @frame_right_edge_width, y: 0,
-      w: @frame_right_edge_width, h: @frame_bottom_height,
-      path: "sprites/frame/bottom_right_corner.png",
-    }
-    frame.primitives << {
-      x: @frame_left_edge_width, y: 0,
-      w: @grid_width, h: @frame_bottom_height,
-      path: "sprites/frame/bottom_edge.png",
-    }
+      # Bottom edge and bottom corners
+      {
+        x: 0, y: 0,
+        w: @frame_left_edge_width, h: @frame_bottom_height,
+        path: "sprites/frame/bottom_left_corner.png",
+      },
+      {
+        x: @frame_width - @frame_right_edge_width, y: 0,
+        w: @frame_right_edge_width, h: @frame_bottom_height,
+        path: "sprites/frame/bottom_right_corner.png",
+      },
+      {
+        x: @frame_left_edge_width, y: 0,
+        w: @grid_width, h: @frame_bottom_height,
+        path: "sprites/frame/bottom_edge.png",
+      },
 
-    # Bezel between display and grid
-    frame.primitives << {
-      x: @frame_left_edge_width,
-      y: frame.h - @frame_display_edge_height,
-      w: @frame_width - @frame_edges_width, h: @frame_middle_bezel_height,
-      path: "sprites/frame/middle_bezel.png",
-    }
+      # Bezel between display and grid
+      {
+        x: @frame_left_edge_width,
+        y: frame.h - @frame_display_edge_height,
+        w: @frame_width - @frame_edges_width, h: @frame_middle_bezel_height,
+        path: "sprites/frame/middle_bezel.png",
+      },
+    ]
   end
 
   # Draw/redraw functions
@@ -185,16 +187,18 @@ class MinesweeperGame
     smiley = @args.outputs[:smiley]
     smiley.w, smiley.h = @smiley_bezel_size, @smiley_bezel_size
 
-    smiley << {
-      x: 0, y: 0,
-      w: @smiley_bezel_size, h: @smiley_bezel_size,
-      path: "sprites/frame/smiley_bezel.png",
-    }
-    smiley << {
-      x: 1, y: 1,
-      w: @smiley_size, h: @smiley_size,
-      path: "sprites/smileys/#{sprite}.png",
-    }
+    smiley << [
+      {
+        x: 0, y: 0,
+        w: @smiley_bezel_size, h: @smiley_bezel_size,
+        path: "sprites/frame/smiley_bezel.png",
+      },
+      {
+        x: 1, y: 1,
+        w: @smiley_size, h: @smiley_size,
+        path: "sprites/smileys/#{sprite}.png",
+      },
+    ]
   end
 
   def draw_digits(target, n)
